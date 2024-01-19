@@ -1,0 +1,14 @@
+{
+    "service1" : {
+        "sample1": {
+            "cron": "0 1/3 1/1 * *",
+            "cronDescription": "Every 3 hours, starting at 01:00 AM"
+        }
+    },
+    "service2" : {
+        "sample2": {
+            "cron": "0 0/1 * * *",
+            "cronDescription": "Every hour"
+        }
+    }
+}
