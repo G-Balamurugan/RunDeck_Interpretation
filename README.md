@@ -1,6 +1,6 @@
 # RunDeck Job Processing Application
 
-Welcome to the RunDeck Job Processing Application! This tool is designed to handle RunDeck Job descriptions stored as XML files, providing an efficient process to convert, analyze, and document the information.
+Welcome to the RunDeck Job Processing Application! This tool streamlines the handling of RunDeck Job descriptions stored as XML files, offering an efficient process for conversion, analysis, and documentation.
 
 ## Overview
 
@@ -15,12 +15,17 @@ Welcome to the RunDeck Job Processing Application! This tool is designed to hand
 
 ### Cron Expression Generation
 
-- The application traverses through each generated JSON file.
+- The application traverses through each generated JSON.
 - Using the extracted information, it creates Cron Expressions, a scheduling format used in Unix-like operating systems.
 
 ### Description Assignment
 
 - For each Cron Expression generated, the application associates descriptive information, including details about the scheduled task and its purpose.
+  
+### Grouping Results by Service Type
+
+- The application extracts the service type and groups them individually.
+- The grouped results are stored in the `final_service_json.json` file located in the `Json_File` folder.
 
 ### Output Storage
 
@@ -28,8 +33,10 @@ Welcome to the RunDeck Job Processing Application! This tool is designed to hand
 
 ### Result Summary
 
-- A comprehensive summary is compiled in an `output_jobs.xlsx` file.
-- This Excel file serves as structured output, providing a clear overview of the extracted data, generated Cron Expressions, and their corresponding descriptions.
+- A detailed summary is consolidated in the `output_jobs.xlsx` file.
+- The Excel file is organized, with each sheet dedicated to providing job descriptions for a specific service, the sheet names correspond to the respective service names.
+- This structured output enhances clarity, offering a comprehensive overview of the extracted data, generated Cron Expressions, and their associated descriptions.
+
 
 ## Usage
 
@@ -48,4 +55,3 @@ Follow these simple steps to make the most of the RunDeck Job Processing Applica
     - Execute the **`main.py`** file to seamlessly process and analyze the RunDeck Job descriptions.
 
 Feel free to explore this RunDeck Job Processing Application!
-
