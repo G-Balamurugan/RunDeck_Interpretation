@@ -6,12 +6,12 @@ Welcome to the RunDeck Job Processing Application! This tool is designed to hand
 
 ### Input XML Processing
 
-- The application reads all XML files present in the "Input_XML" folder, containing RunDeck Job descriptions.
+- The application reads all XML files present in the `Input_XML` folder, containing RunDeck Job descriptions.
 - For each XML file, it extracts relevant information and converts it into JSON format.
 
 ### JSON Output
 
-- Converted JSON files are stored in the "Json_File" folder, in a file named "input_json.json".
+- Converted JSON files are stored in the `Json_File` folder, in a file named `input_json.json`.
 
 ### Cron Expression Generation
 
@@ -24,11 +24,11 @@ Welcome to the RunDeck Job Processing Application! This tool is designed to hand
 
 ### Output Storage
 
-- The final processed information, including Cron Expressions and associated descriptions, is stored in the "final_json.json" file within the "Json_File" folder.
+- The final processed information, including Cron Expressions and associated descriptions, is stored in the `final_json.json` file within the `Json_File` folder.
 
 ### Result Summary
 
-- A comprehensive summary is compiled in an "output_jobs.xlsx" file.
+- A comprehensive summary is compiled in an `output_jobs.xlsx` file.
 - This Excel file serves as structured output, providing a clear overview of the extracted data, generated Cron Expressions, and their corresponding descriptions.
 
 ## Usage
@@ -42,10 +42,10 @@ Follow these simple steps to make the most of the RunDeck Job Processing Applica
     Clone the application repository to your local machine using the provided command.
 
 2. **Input XML Files:**
-    - Place your RunDeck Job XML files in the designated **"Input_XML" folder**.
+    - Place your RunDeck Job XML files in the designated **`Input_XML` folder**.
 
 3. **Run the Application:**
-    - Execute the `main.py` file to seamlessly process and analyze the RunDeck Job descriptions.
+    - Execute the **`main.py`** file to seamlessly process and analyze the RunDeck Job descriptions.
 
 Feel free to explore this RunDeck Job Processing Application!
 
