@@ -1,7 +1,4 @@
-import json
 from cron_descriptor import get_description
-
-jsonFile = '/Users/balamurugan/Desktop/RunDeck/Json_File/final_json.json'
 
 # Generating Cron Format from Schedule Time  
 def generateCron(minute , hour , monthDay , month , weekDay):
@@ -13,10 +10,24 @@ def translateCronExpression(cron_expression):
     description = get_description(cron_expression)
     return description
 
+def extractServiceType(script):
+    if script[:4] != "curl" or script.find("http://") == -1: return ""
+    index = script.index("http://") + len("http://")
+    dotIndex = script[index:].index(".")
+    return script[index : index+dotIndex]
+
+def serviceMapping(service):
+    if service == "search-service": return "indexer"
+    elif service == "search-backend": return "backend"
+    elif service == "pyeongyang-search": return "pyeongyang"
+    elif service[:len('x-search-solr')] == "x-search-solr": return "solr"
+    
 # Extracting Necessary Details from Raw Input Json 
 def extractDetails(inputJson):
+    finalServiceJson = {}
     finalJson = {}
     for element in inputJson:
+        serviceTypeList = set()
         tempDict = inputJson[element]["joblist"]["job"]
         
         finalJson[element] = {
@@ -57,25 +68,41 @@ def extractDetails(inputJson):
         if(type(tempDict["sequence"]["command"]) == dict):
             finalJson[element]["script"] , finalJson[element]["errorScript"] = [] , []
             if "script" in tempDict["sequence"]["command"]:
+                serviceType = extractServiceType(tempDict["sequence"]["command"]["script"])
+                if serviceType != "": serviceTypeList.add(serviceType)
                 finalJson[element]["script"].append(tempDict["sequence"]["command"]["script"])
             if "errorhandler" in tempDict["sequence"]["command"]:
                 if "script" in tempDict["sequence"]["command"]["errorhandler"]:
+                    serviceType = extractServiceType(tempDict["sequence"]["command"]["errorhandler"]["script"])
+                    if serviceType != "": serviceTypeList.add(serviceType)
                     finalJson[element]["errorScript"].append(tempDict["sequence"]["command"]["errorhandler"]["script"])
         else:       
             scriptList , errorScriptList = [] , []
             for scriptCurl in list(tempDict["sequence"]["command"]):
                 if "script" in scriptCurl: 
+                    serviceType = extractServiceType(scriptCurl["script"])
+                    if serviceType != "": serviceTypeList.add(serviceType)
                     scriptList.append(scriptCurl["script"])
                 if "errorhandler" in scriptCurl and "script" in scriptCurl["errorhandler"]:
+                    serviceType = extractServiceType(scriptCurl["errorhandler"]["script"])
+                    if serviceType != "": serviceTypeList.add(serviceType)
                     errorScriptList.append(scriptCurl["errorhandler"]["script"])
             finalJson[element]["script"] = scriptList
             finalJson[element]["errorScript"] = errorScriptList
 
+        serviceList = []
+        for service in serviceTypeList: serviceList.append(serviceMapping(service))
+        finalJson[element]["curlCount"] = len(serviceList)
+        finalJson[element]["curlList"] = list(serviceList)
         finalJson[element]["cron"] = generateCron(finalJson[element]["minute"], finalJson[element]["hour"], finalJson[element]["monthDay"],  finalJson[element]["month"], finalJson[element]["weekDay"])
         finalJson[element]["cronDescription"] = translateCronExpression(finalJson[element]["cron"])
 
-    finalJsonObject = json.dumps(finalJson,indent=4)
-    with open(jsonFile, "w") as outfile:
-        outfile.write(finalJsonObject)
+        for serviceElement in serviceList:
+            if serviceElement not in finalServiceJson:
+                finalServiceJson[serviceElement] = { element : {} }
+            finalServiceJson[serviceElement][element] = finalJson[element]
     
-    return finalJson
+    return {
+        "finalJson" : finalJson,
+        "finalServiceJson" : finalServiceJson
+    }
