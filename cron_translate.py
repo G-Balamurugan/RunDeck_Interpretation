@@ -17,10 +17,10 @@ def extractServiceType(script):
     return script[index : index+dotIndex]
 
 def serviceMapping(service):
-    if service == "search-service": return "indexer"
-    elif service == "search-backend": return "backend"
-    elif service == "pyeongyang-search": return "pyeongyang"
-    elif service[:len('x-search-solr')] == "x-search-solr": return "solr"
+    if service == "text-name-1": return "text1"
+    elif service == "text-name-2": return "text2"
+    elif service == "text-name-3": return "text3"
+    elif service[:len('text-name-4')] == "text-name-4": return "text4"
     
 # Extracting Necessary Details from Raw Input Json 
 def extractDetails(inputJson):
